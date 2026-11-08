@@ -27,7 +27,6 @@ async def on_message(message):
             await message.channel.send(f'⚠️ **Polipro:** {message.author.mention}, ¡en este servidor no se permiten malas palabras!')
         except Exception as e:
             print(f"No se pudo borrar el mensaje: {e}")
-        return
 
     await bot.process_commands(message)
 
