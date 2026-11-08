@@ -33,4 +33,4 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # Reemplazá 'MTU2OTAxNjA2NTExODMxNDY0OQ.GCG-qx.JEZ5g90vupMedXCMWay1SesdEuQGp9rmOUTooY' por el token de tu bot de Discord
-bot.run('MTU2OTAxNjA2NTExODMxNDY0OQ.GCG-qx.JEZ5g90vupMedXCMWay1SesdEuQGp9rmOUTooY')
+bot.run('')
