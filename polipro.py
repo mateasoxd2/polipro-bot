@@ -21,8 +21,8 @@ MALAS_PALABRAS = [
     "boludo", "boluda", "boludito",
     "pelotudo", "pelotuda",
     "estupido", "estúpida", "estupida", "estúpido",
-    "cagada", "cagado", "cagar",
-    "conchudo", "conchuda", "concha",
+    "cagada", "cagado", "cagar", "cagon", "cagón",
+    "conchudo", "conchuda", "concha", "culiado", "culiao", "culiada", "culia"
     
     # Inglés
     "fuck", "fucking", "fucked", "motherfucker", "asshole",
