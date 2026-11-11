@@ -8,8 +8,22 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# Lista de palabras que Polipro va a moderar
-MALAS_PALABRAS = ["puto", "pendejo", "idiota", "imbecil", "verga", "puta"]
+# Lista ampliada de palabras prohibidas (todas en minúsculas porque el filtro usa .lower())
+MALAS_PALABRAS = [
+    "puto", "putita", "putear", "putaza",
+    "puta", "putita", "putanga",
+    "pendejo", "pendeja", "pendejito",
+    "idiota", "idioteces",
+    "imbecil", "imbécil",
+    "verga", "vergas", "vergota",
+    "zorra", "zorrita", "zorron", "zorrón",
+    "malparido", "malparida",
+    "boludo", "boluda", "boludito",
+    "pelotudo", "pelotuda",
+    "estupido", "estúpida", "estupida", "estúpido",
+    "cagada", "cagado", "cagar",
+    "conchudo", "conchuda", "concha"
+]
 
 @bot.event
 async def on_ready():
@@ -24,7 +38,7 @@ async def on_message(message):
     if any(palabra in contenido for palabra in MALAS_PALABRAS):
         try:
             await message.delete()
-            await message.channel.send(f'⚠️ **Polipro:** {message.author.mention}, ¡en este servidor no se permiten malas palabras!')
+            await message.channel.send(f'{message.author.mention}, ¡en este servidor no se permiten malas palabras!')
         except Exception as e:
             print(f"No se pudo borrar el mensaje: {e}")
 
