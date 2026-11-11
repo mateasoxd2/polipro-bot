@@ -9,7 +9,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Lista de palabras que Polipro va a moderar
-MALAS_PALABRAS = ["insulto1", "insulto2", "palabraprohibida"]
+MALAS_PALABRAS = ["puto", "pendejo", "idiota", "imbecil", "verga", "puta"]
 
 @bot.event
 async def on_ready():
