@@ -1,6 +1,7 @@
 import re
 import unicodedata
 import os
+from datetime import datetime
 import discord
 from discord.ext import commands
 
@@ -104,15 +105,41 @@ def detectar_infraccion(texto):
 
     # Primera capa: palabras y expresiones exactas
     for patron in PATRONES_EXACTOS:
-        if patron.search(texto):
-            return True
+        coincidencia = patron.search(texto)
+        if coincidencia:
+            return ("palabra exacta", coincidencia.group(0))
 
     # Segunda capa: raíces y derivados
     for patron in PATRONES_RAICES:
-        if patron.search(texto):
-            return True
+        coincidencia = patron.search(texto)
+        if coincidencia:
+            return ("raíz o derivado", coincidencia.group(0))
 
-    return False
+    return None
+
+
+# ============================================================
+# REGISTRO PRIVADO DE INFRACCIONES
+# ============================================================
+
+def registrar_infraccion(message, tipo, coincidencia):
+
+    fecha = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
+    canal = getattr(message.channel, "name", "canal-desconocido")
+
+    # Guardamos solamente la coincidencia detectada, no el mensaje completo.
+    registro = (
+        f"[{fecha}] Usuario: {message.author} (ID: {message.author.id}) | "
+        f"Canal: #{canal} | Regla: {tipo} | Coincidencia: {coincidencia}\n"
+    )
+
+    try:
+        with open("polipro_registros.txt", "a", encoding="utf-8") as archivo:
+            archivo.write(registro)
+    except OSError as error:
+        print(f"ERROR al guardar el registro de Polipro: {error}")
+
+    print(registro.rstrip())
 
 
 # ============================================================
@@ -124,6 +151,8 @@ PALABRAS_EXTRA = [
     # ==================== ESPAÑOL ====================
 
     "forro", "forra", "forrito", "forrada",
+    "pene", "pito", "pinga", "poronga",
+    "cagada", "kgda", "jueputa",
     "garca", "garcar", "garcador",
     "choto", "chota", "chotazo",
     "salame", "mamerto", "mamerta",
@@ -466,9 +495,13 @@ async def on_message(message):
         return
 
     # Analizar el contenido
-    violacion = detectar_infraccion(message.content)
+    resultado = detectar_infraccion(message.content)
 
-    if violacion:
+    if resultado is not None:
+        tipo, coincidencia = resultado
+
+        # Registrar el intento antes de borrar el mensaje
+        registrar_infraccion(message, tipo, coincidencia)
 
         try:
             await message.delete()
