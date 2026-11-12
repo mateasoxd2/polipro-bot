@@ -95,27 +95,6 @@ def crear_patron(palabra, raiz=False):
 
 
 # ============================================================
-# COMPILAR DICCIONARIOS
-# ============================================================
-
-DICCIONARIO_COMPLETO = PALABRAS_EXACTAS + PALABRAS_EXTRA
-
-RAICES_COMPLETAS = RAICES_PROHIBIDAS + RAICES_EXTRA
-
-PATRONES_EXACTOS = [
-    crear_patron(p)
-    for p in DICCIONARIO_COMPLETO
-    if crear_patron(p) is not None
-]
-
-PATRONES_RAICES = [
-    crear_patron(r, raiz=True)
-    for r in RAICES_COMPLETAS
-    if crear_patron(r, raiz=True) is not None
-]
-
-
-# ============================================================
 # DETECTOR PRINCIPAL
 # ============================================================
 
@@ -236,7 +215,7 @@ PALABRAS_EXTRA = [
     "klootzak", "eikel", "lul", "kut",
     "tering", "tyfus", "godverdomme",
     "sukkel", "klootviool", "hufter",
-    "kanker", "hondelul", " klootzak",
+    "kanker", "hondelul", "klootzak",
     "pannenkoek", "mongool", "debiel",
 
     # ==================== POLACO ====================
@@ -450,17 +429,33 @@ RAICES_EXTRA = [
     "jancok", "brengsek", "keparat",
 ]
 
-def limpiar_texto(texto):
-    # Convierte a minúsculas, elimina espacios, guiones, puntos y normaliza leetspeak
-    texto = texto.lower()
-    reemplazos = {
-        '1': 'i', '3': 'e', '4': 'a', '@': 'a', '0': 'o',
-        '5': 's', '$': 's', '7': 't', '8': 'b', 
-        ' ': '', '-': '', '_': '', '.': '', ',': '', ';': ''
-    }
-    for char, letra in reemplazos.items():
-        texto = texto.replace(char, letra)
-    return texto
+
+# ============================================================
+# LISTAS BASE (en el archivo que revisamos no estaban definidas)
+# ============================================================
+
+PALABRAS_EXACTAS = []
+RAICES_PROHIBIDAS = []
+
+
+# ============================================================
+# COMPILAR DICCIONARIOS - SIEMPRE DESPUÉS DE DEFINIR LAS LISTAS
+# ============================================================
+
+DICCIONARIO_COMPLETO = PALABRAS_EXACTAS + PALABRAS_EXTRA
+RAICES_COMPLETAS = RAICES_PROHIBIDAS + RAICES_EXTRA
+
+PATRONES_EXACTOS = []
+for palabra in DICCIONARIO_COMPLETO:
+    patron = crear_patron(palabra)
+    if patron is not None:
+        PATRONES_EXACTOS.append(patron)
+
+PATRONES_RAICES = []
+for raiz in RAICES_COMPLETAS:
+    patron = crear_patron(raiz, raiz=True)
+    if patron is not None:
+        PATRONES_RAICES.append(patron)
 
 
 @bot.event
@@ -493,4 +488,8 @@ async def on_message(message):
 
 
 # Toma el token de forma segura desde las variables de entorno de Railway
-bot.run(os.getenv('TOKEN'))
+token = os.getenv('TOKEN')
+if not token:
+    raise RuntimeError("No se encontró la variable de entorno TOKEN. Configurala en Railway o en tu entorno local.")
+
+bot.run(token)
