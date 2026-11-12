@@ -99,9 +99,33 @@ def crear_patron(palabra, raiz=False):
 # DETECTOR PRINCIPAL
 # ============================================================
 
+# Palabras normales que contienen "puta" como parte de otra palabra.
+# Evita que el detector por subcadena bloquee estos casos comunes.
+EXCEPCIONES_PUTO_PUTA = {
+    "computadora",
+    "computadoras",
+    "reputacion",
+    "reputaciones",
+    "reputacional",
+    "reputacionales",
+}
+
+
 def detectar_infraccion(texto):
 
     texto = normalizar(texto)
+
+    # Capa especial: detectar "puto" o "puta" incluso dentro de otra
+    # cadena, por ejemplo: "jhjhputogdejmierda".
+    # Se revisan palabras completas (tokens) y se excluyen excepciones
+    # comunes para reducir falsos positivos.
+    for token in re.findall(r"\\w+", texto):
+        if token in EXCEPCIONES_PUTO_PUTA:
+            continue
+
+        if "puto" in token or "puta" in token:
+            coincidencia = "puto" if "puto" in token else "puta"
+            return ("subcadena puto/puta", coincidencia)
 
     # Primera capa: palabras y expresiones exactas
     for patron in PATRONES_EXACTOS:
@@ -151,8 +175,14 @@ PALABRAS_EXTRA = [
     # ==================== ESPAÑOL ====================
 
     "forro", "forra", "forrito", "forrada",
-    "pene", "pito", "pinga", "poronga",
-    "cagada", "kgda", "jueputa",
+
+    # Insultos detectados en las pruebas con Cher
+    "verga", "pene", "puta", "puto", "crj", "carajo",
+    "jueputa", "pto", "ptoo", "pendejo", "jpta",
+    "poliputo", "hijuetuputamare", "hijueputamare",
+    "pinga", "poronga", "kgda",
+
+    "pito", "cagada",
     "garca", "garcar", "garcador",
     "choto", "chota", "chotazo",
     "salame", "mamerto", "mamerta",
@@ -400,9 +430,12 @@ PALABRAS_EXTRA = [
 RAICES_EXTRA = [
 
     # Español
+    "verga", "puta", "caraj", "pendej", "jueput",
+    "hijueput", "hijuetuput", "poliput", "pinga",
+    "porong", "crj", "jpta", "ptoo", "kgda",
     "forr", "garc", "chot", "soret", "pajer",
     "cornud", "mamert", "capull", "cabr",
-    "gilipoll", "hijueput", "malnacid",
+    "gilipoll", "malnacid",
     "rompebol", "chupaver", "chupapij",
 
     # Inglés
