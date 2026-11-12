@@ -8,9 +8,9 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# 1. PALABRAS EXACTAS Y ABREVIACIONES (Español, Inglés ampliado, Portugués e Italiano)
+# 1. PALABRAS EXACTAS Y ABREVIACIONES (Diccionario definitivo + términos de odio/discriminación)
 PALABRAS_EXACTAS = [
-    # Español / Insultos directos y abreviaciones crudas
+    # Español / Insultos directos, abreviaciones y modismos
     "puto", "putita", "putear", "putaza", "puta", "putanga", "put", "pto", "pta", "ptas", "ptos",
     "pendejo", "pendeja", "pendejito", "pndj", "pendej",
     "idiota", "idioteces", "idiot",
@@ -21,13 +21,17 @@ PALABRAS_EXACTAS = [
     "boludo", "boluda", "boludito", "bolud",
     "pelotudo", "pelotuda", "pelotud",
     "estupido", "estúpida", "estupida", "estúpido", "estupid",
-    "cagada", "cagado", "cagar", "cagon", "cagón", "cag",
+    "cagada", "cagado", "cagar", "cagon", "cagón", "cag", "kgd", "kgada", "kgado",
     "conchudo", "conchuda", "concha", "conch",
-    "culiado", "culiao", "culiada", "culia", "culi",
-    "mierda", "mrds", "mierd",
+    "culiado", "culiao", "culiada", "culia", "culi", "culero", "culera", "culeros",
+    "mierda", "mrds", "mierd", "mielda",
     "hdp", "hdspm", "hdsrmpm", "dhrcrmp",
-    "maricon", "maricón", "maric", "mrk",
-    "pnt", "pnta",
+    "maricon", "maricón", "maric", "mrk", "marik",
+    "pnt", "pnta", "tarado", "tarada",
+    
+    # Términos de odio, discriminación y racismo (Nuevos de las capturas)
+    "hitler", "nazi", "nigga", "nigger", "nigg", "negros", "negro", "faggot", "fag",
+    "retard", "tranny",
     
     # Inglés (Arsenal completo y pesado + abreviaciones)
     "fuck", "fucking", "fucked", "fucker", "motherfucker", "mf", "fck", "fuk",
@@ -36,7 +40,6 @@ PALABRAS_EXACTAS = [
     "slut", "whore", "hoe", "thot", "prick", "dumbass", "jackass",
     "crap", "piss", "pissed", "douche", "douchebag", "wanker", "twat",
     "cock", "cocksucker", "pussy", "schlong", "bollocks",
-    "nigger", "nigga", "nigg", "faggot", "fag", "retard", "tranny",
     
     # Portugués
     "caralho", "porra", "filho da puta", "fdp", "caral",
@@ -47,20 +50,22 @@ PALABRAS_EXACTAS = [
     "bastardo", "minchia", "cretino", "stronz", "vaffanc", "cazz", "puttan", "minch", "cretin"
 ]
 
-# 2. RAÍCES UNIVERSALES (Atrapa cualquier deformación, variante nueva o insulto compuesto)
+# 2. RAÍCES UNIVERSALES (Atrapa variaciones nuevas, racistas, odiosas y deformadas)
 RAICES_PROHIBIDAS = [
     "put", "pndj", "pendej", "idiot", "imbec", "imbcl",
     "verg", "zorr", "malpar", "bolud", "pelotud", "estupid",
-    "cag", "conch", "culi", "mierd", "mrds",
-    "nigg", "fck", "bitch", "cunt", "bastard", "asshol", "dickhead"
+    "cag", "kg", "conch", "culi", "mierd", "mrds", "mield",
+    "nigg", "fck", "bitch", "cunt", "bastard", "asshol", "dickhead", "tarad",
+    "hitler", "nazi", "negr"
 ]
 
 def limpiar_texto(texto):
-    # Convierte a minúsculas, elimina espacios y normaliza símbolos/números (anti-trampas)
+    # Convierte a minúsculas, elimina espacios, guiones, puntos y normaliza leetspeak
     texto = texto.lower()
     reemplazos = {
         '1': 'i', '3': 'e', '4': 'a', '@': 'a', '0': 'o',
-        '5': 's', '$': 's', '7': 't', '8': 'b', ' ': '', '-': '', '_': '', '.': ''
+        '5': 's', '$': 's', '7': 't', '8': 'b', 
+        ' ': '', '-': '', '_': '', '.': '', ',': '', ';': ''
     }
     for char, letra in reemplazos.items():
         texto = texto.replace(char, letra)
@@ -68,38 +73,37 @@ def limpiar_texto(texto):
 
 @bot.event
 async def on_ready():
-    print(f'👮 Polipro Multilingüe Extremo está patrullando como {bot.user}')
+    print(f'👮 Polipro Versión 3.0 Ultra Blindado operativo como {bot.user}')
 
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
         return
 
-    # Texto original sin espacios para abreviaciones juntas
-    texto_crudo = message.content.lower().replace(" ", "")
-    
-    # Texto normalizado anti-leetspeak y símbolos
+    # Múltiples capas de análisis para que ninguna trampa pase
+    texto_crudo = message.content.lower()
+    texto_sin_espacios = message.content.lower().replace(" ", "")
     contenido_limpio = limpiar_texto(message.content)
 
     violacion = False
 
-    # Verificamos si alguna palabra exacta o abreviatura encaja
+    # Capa 1: Verificación de palabras exactas / abreviaciones
     for palabra in PALABRAS_EXACTAS:
-        if palabra in texto_crudo or palabra in contenido_limpio:
+        if palabra in texto_crudo or palabra in texto_sin_espacios or palabra in contenido_limpio:
             violacion = True
             break
 
-    # Si no, revisamos por raíces prohibidas
+    # Capa 2: Verificación por raíces universales
     if not violacion:
         for raiz in RAICES_PROHIBIDAS:
-            if raiz in contenido_limpio:
+            if raiz in contenido_limpio or raiz in texto_sin_espacios:
                 violacion = True
                 break
 
     if violacion:
         try:
             await message.delete()
-            await message.channel.send(f'{message.author.mention}, ¡imposible burlar a Polipro! Cero tolerancia a insultos en ningún idioma.')
+            await message.channel.send(f'{message.author.mention}, NOPE.')
         except Exception as e:
             print(f"No se pudo borrar el mensaje: {e}")
 
