@@ -179,8 +179,8 @@ PALABRAS_EXTRA = [
     # Insultos detectados en las pruebas con Cher
     "verga", "pene", "puta", "puto", "crj", "carajo",
     "jueputa", "pto", "ptoo", "pendejo", "jpta",
-    "poliputo", "hijuetuputamare", "hijueputamare",
-    "pinga", "poronga", "kgda", "taraado", "porqueria", "escoria"
+    "poliputo", "hijuetuputamare", "hijueputamare", "kgn", "polqria", "plqria", "polqueria", "plqueria", "prqueria"
+    "pinga", "poronga", "kgda", "taraado", "porqueria", "escoria", "porqria", "prqria", "xqria", "prqueria", "xqueria",
 
     "pito", "cagada",
     "garca", "garcar", "garcador",
@@ -431,6 +431,10 @@ RAICES_EXTRA = [
 
     # Español
     "verga", "puta", "caraj", "pendej", "jueput", "mierd", "mrd",
+    "verga", "pene", "puta", "puto", "crj", "carajo",
+    "jueputa", "pto", "ptoo", "pendejo", "jpta",
+    "poliputo", "hijuetuputamare", "hijueputamare", "kgn", "polqria", "plqria", "po
+    "pinga", "poronga", "kgda", "taraado", "porqueria", "escoria", "porqria", "prqria", "xqria", "prqueria", "xqueria",
     "hijueput", "hijuetuput", "poliput", "pinga", "puto",
     "porong", "crj", "jpta", "pto", "kgda", "pta"
     "forr", "garc", "chot", "soret", "pajer",
