@@ -527,9 +527,14 @@ for raiz in RAICES_COMPLETAS:
 
 
 @bot.event
-async def on_message(message):
 
-    # Ignorar bots
+# ============================================================
+# ANALIZAR MENSAJES NUEVOS Y EDITADOS
+# ============================================================
+
+async def analizar_mensaje(message):
+
+    # Ignorar mensajes de bots
     if message.author.bot:
         return
 
@@ -539,7 +544,7 @@ async def on_message(message):
     if resultado is not None:
         tipo, coincidencia = resultado
 
-        # Registrar el intento antes de borrar el mensaje
+        # Registrar antes de eliminar
         registrar_infraccion(message, tipo, coincidencia)
 
         try:
@@ -553,10 +558,52 @@ async def on_message(message):
         except discord.Forbidden:
             print("ERROR: Polipro no tiene permiso para eliminar mensajes.")
 
-        except discord.HTTPException as e:
-            print(f"ERROR de Discord: {e}")
+        except discord.HTTPException as error:
+            print(f"ERROR de Discord: {error}")
+
+
+# ============================================================
+# MENSAJES NUEVOS
+# ============================================================
+
+@bot.event
+async def on_message(message):
+
+    await analizar_mensaje(message)
 
     await bot.process_commands(message)
+
+
+# ============================================================
+# MENSAJES EDITADOS
+# ============================================================
+
+@bot.event
+async def on_raw_message_edit(payload):
+
+    try:
+        # Obtener el canal
+        canal = bot.get_channel(payload.channel_id)
+
+        if canal is None:
+            canal = await bot.fetch_channel(payload.channel_id)
+
+        # Obtener el mensaje actualizado
+        mensaje = await canal.fetch_message(payload.message_id)
+
+        # Analizarlo nuevamente
+        await analizar_mensaje(mensaje)
+
+    except discord.NotFound:
+        # El mensaje ya no existe
+        pass
+
+    except discord.Forbidden:
+        print("ERROR: Polipro no puede leer el mensaje editado.")
+
+    except discord.HTTPException as error:
+        print(f"ERROR al recuperar mensaje editado: {error}")
+
 
 
 # Toma el token de forma segura desde las variables de entorno de Railway
