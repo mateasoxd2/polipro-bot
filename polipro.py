@@ -119,7 +119,7 @@ def detectar_infraccion(texto):
     # cadena, por ejemplo: "jhjhputogdejmierda".
     # Se revisan palabras completas (tokens) y se excluyen excepciones
     # comunes para reducir falsos positivos.
-    for token in re.findall(r"\\w+", texto):
+    for token in re.findall(r"\w+", texto):
         if token in EXCEPCIONES_PUTO_PUTA:
             continue
 
@@ -179,8 +179,11 @@ PALABRAS_EXTRA = [
     # Insultos detectados en las pruebas con Cher
     "verga", "pene", "puta", "puto", "crj", "carajo",
     "jueputa", "pto", "ptoo", "pendejo", "jpta",
-    "poliputo", "hijuetuputamare", "hijueputamare", "kgn", "polqria", "plqria", "polqueria", "plqueria", "prqueria"
-    "pinga", "poronga", "kgda", "taraado", "porqueria", "escoria", "porqria", "prqria", "xqria", "prqueria", "xqueria",
+    "poliputo", "hijuetuputamare", "hijueputamare",
+    "kgn", "polqria", "plqria", "polqueria",
+    "plqueria", "prqueria", "pinga", "poronga", 
+    "kgda", "taraado", "porqueria", "escoria", "porqria", 
+    "prqria", "xqria", "prqueria", "xqueria",
 
     "pito", "cagada",
     "garca", "garcar", "garcador",
@@ -427,25 +430,24 @@ PALABRAS_EXTRA = [
 
 # 2. RAÍCES UNIVERSALES (Atrapa variaciones nuevas, racistas, odiosas y deformadas)
 
+
 RAICES_EXTRA = [
 
     # Español
-    "verga", "puta", "caraj", "pendej", "jueput", "mierd", "mrd",
-    "verga", "pene", "puta", "puto", "crj", "carajo",
-    "jueputa", "pto", "ptoo", "pendejo", "jpta",
-    "poliputo", "hijuetuputamare", "hijueputamare", "kgn", "polqria", "plqria", "po
-    "pinga", "poronga", "kgda", "taraado", "porqueria", "escoria", "porqria", "prqria", "xqria", "prqueria", "xqueria",
-    "hijueput", "hijuetuput", "poliput", "pinga", "puto",
-    "porong", "crj", "jpta", "pto", "kgda", "pta"
-    "forr", "garc", "chot", "soret", "pajer",
-    "cornud", "mamert", "capull", "cabr",
-    "gilipoll", "malnacid", "jod", "bolu",
-    "rompebol", "chupaver", "chupapij", "cgd"
+    "verg", "put", "caraj", "pendej", "jueput",
+    "mierd", "mrd", "crj", "jpta", "pto",
+    "ptoo", "poliput", "hijueput", "hijuetuput",
+    "pinga", "porong", "kgda", "taraad",
+    "porquer", "escoria", "forr", "garc",
+    "chot", "soret", "pajer", "cornud",
+    "mamert", "capull", "cabr", "gilipoll",
+    "malnacid", "jod", "bolu", "rompebol",
+    "chupaver", "chupapij", "cgd",
 
     # Inglés
     "dumbf", "dipsh", "shithead", "fuckfac",
     "scumb", "asswip", "dickwad", "shitst",
-    "fuckwit", "fuckhead", "cockhead", "nig",
+    "fuckwit", "fuckhead", "cockhead",
     "twatwaff", "shitbrain", "arsewipe",
 
     # Portugués
@@ -475,7 +477,7 @@ RAICES_EXTRA = [
     "бляд", "сука", "хуй", "пизд", "ебан",
     "blyat", "mudak", "pizd", "pidor",
 
-    # Japonés / Coreano
+    # Japonés y coreano
     "kuso", "baka", "chikush", "씨발",
     "시발", "개새끼", "병신",
 
@@ -490,7 +492,7 @@ RAICES_EXTRA = [
     # Filipino
     "putang", "tarantad", "punyet",
 
-    # Otros
+    # Otros idiomas
     "anjing", "bangsat", "kontol",
     "jancok", "brengsek", "keparat",
 ]
