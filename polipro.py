@@ -180,7 +180,7 @@ PALABRAS_EXTRA = [
     "verga", "pene", "puta", "puto", "crj", "carajo",
     "jueputa", "pto", "ptoo", "pendejo", "jpta",
     "poliputo", "hijuetuputamare", "hijueputamare",
-    "pinga", "poronga", "kgda",
+    "pinga", "poronga", "kgda", "taraado", "porqueria"
 
     "pito", "cagada",
     "garca", "garcar", "garcador",
@@ -430,18 +430,18 @@ PALABRAS_EXTRA = [
 RAICES_EXTRA = [
 
     # Español
-    "verga", "puta", "caraj", "pendej", "jueput",
-    "hijueput", "hijuetuput", "poliput", "pinga",
-    "porong", "crj", "jpta", "ptoo", "kgda",
+    "verga", "puta", "caraj", "pendej", "jueput", "mierd", "mrd",
+    "hijueput", "hijuetuput", "poliput", "pinga", "puto",
+    "porong", "crj", "jpta", "pto", "kgda", "pta"
     "forr", "garc", "chot", "soret", "pajer",
     "cornud", "mamert", "capull", "cabr",
-    "gilipoll", "malnacid",
+    "gilipoll", "malnacid", "jod", "bolu",
     "rompebol", "chupaver", "chupapij",
 
     # Inglés
     "dumbf", "dipsh", "shithead", "fuckfac",
     "scumb", "asswip", "dickwad", "shitst",
-    "fuckwit", "fuckhead", "cockhead",
+    "fuckwit", "fuckhead", "cockhead", "nig",
     "twatwaff", "shitbrain", "arsewipe",
 
     # Portugués
