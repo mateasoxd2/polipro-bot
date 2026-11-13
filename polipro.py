@@ -180,7 +180,7 @@ PALABRAS_EXTRA = [
     "verga", "pene", "puta", "puto", "crj", "carajo",
     "jueputa", "pto", "ptoo", "pendejo", "jpta",
     "poliputo", "hijuetuputamare", "hijueputamare",
-    "pinga", "poronga", "kgda", "taraado", "porqueria"
+    "pinga", "poronga", "kgda", "taraado", "porqueria", "escoria"
 
     "pito", "cagada",
     "garca", "garcar", "garcador",
@@ -436,7 +436,7 @@ RAICES_EXTRA = [
     "forr", "garc", "chot", "soret", "pajer",
     "cornud", "mamert", "capull", "cabr",
     "gilipoll", "malnacid", "jod", "bolu",
-    "rompebol", "chupaver", "chupapij",
+    "rompebol", "chupaver", "chupapij", "cgd"
 
     # Inglés
     "dumbf", "dipsh", "shithead", "fuckfac",
